@@ -10,8 +10,7 @@ This is a PFE (Professional Final Project) for graduation, aimed at creating a p
 4. Run the project locally: `npm run dev` (Access the application at `http://localhost:3000`)
 5. Build for production: `npm run build`
 6. Start the production server: `npm start` (Access the application at `http://localhost:3000`)
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-7. # Projet de Fin d'Études : Enseigner aux enfants le codage avec un système de glisser-déposer à l'aide de Blockly et Ansible
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# Projet de Fin d'Études : Enseigner aux enfants le codage avec un système de glisser-déposer à l'aide de Blockly et Ansible
 
 Ce projet de fin d'études vise à créer une plateforme permettant d'enseigner aux enfants le codage à l'aide d'une interface de glisser-déposer, similaire à Scratch. Le projet utilise le module Blockly de Google et intègre l'automatisation avec Ansible.
 
