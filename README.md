@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PFE Project: Teaching Children to Code Using Drag and Drop with Blockly and Ansible
 
-## Getting Started
+This is a PFE (Professional Final Project) for graduation, aimed at creating a platform for teaching children how to code using a drag-and-drop, puzzle-like interface similar to Scratch. The project utilizes the Blockly module from Google and incorporates automation using Ansible.
 
-First, run the development server:
+## Installation, Running, and Building
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository: `git clone https://github.com/Oussamirsekkal/l3pfe.git `
+2. Navigate to the project directory: `cd l3pfe`
+3. Install dependencies: `npm install`
+4. Run the project locally: `npm run dev` (Access the application at `http://localhost:3000`)
+5. Build for production: `npm run build`
+6. Start the production server: `npm start` (Access the application at `http://localhost:3000`)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+7. # Projet de Fin d'Études : Enseigner aux enfants le codage avec un système de glisser-déposer à l'aide de Blockly et Ansible
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ce projet de fin d'études vise à créer une plateforme permettant d'enseigner aux enfants le codage à l'aide d'une interface de glisser-déposer, similaire à Scratch. Le projet utilise le module Blockly de Google et intègre l'automatisation avec Ansible.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation, Exécution et Construction
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Cloner le dépôt : `git clone https://github.com/Oussamirsekkal/l3pfe.git`
+2. Naviguer vers le répertoire du projet : `cd l3pfe`
+3. Installer les dépendances : `npm install`
+4. Exécuter le projet en local : `npm run dev` (Accéder à l'application sur `http://localhost:3000`)
+5. Construire pour la production : `npm run build`
+6. Démarrer le serveur de production : `npm start` (Accéder à l'application sur `http://localhost:3000`)
