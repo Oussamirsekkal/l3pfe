@@ -1,5 +1,5 @@
 import Image from "next/image";
-import "./Blockly/app.css"
+import "./Blockly/App.css"
 
 export default function Home() {
   return (
