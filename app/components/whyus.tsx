@@ -2,8 +2,6 @@ import react from 'react';
 
 export default function Whyus() {
 
-
-
     return (
         <div className="w-auto">
             <div className="mx-auto mt-10 w-full max-w-screen-xl px-4">
