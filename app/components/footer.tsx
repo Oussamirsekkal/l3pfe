@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <footer className="bg-gray-50">
             <div
-                className="mx-auto grid max-w-screen-xl gap-y-8 gap-x-12 px-4 py-10 md:grid-cols-2 xl:grid-cols-4 xl:px-10">
+                className="mx-auto grid max-w-screen-xl gap-y-8 gap-x-12 px-4 py-10 md:grid-cols-2 xl:grid-cols-4 xl:px-10 my-10">
                 <div className="max-w-sm">
                     <div className="mb-6 flex h-12 items-center space-x-2">
                         <span className="text-2xl font-bold">Kid<span className="text-blue-600">Code</span></span>

@@ -36,7 +36,7 @@ import logo from './logo.svg';
 
 function App(props:any) {
   return (
-    <div className="App">
+    <div className="App my-10">
       <header className="App-header">
       <Image src={logo} className="App-logo" alt="logo" />
         <BlocklyComponent
@@ -56,6 +56,7 @@ function App(props:any) {
           <Block type="test_react_field" />
           <Block type="test_react_date_field" />
           <Block type="controls_ifelse" />
+            <Block type="controls_if" />
           <Block type="logic_compare" />
           <Block type="logic_operation" />
           <Block type="controls_repeat_ext">

@@ -1,7 +1,13 @@
 "use client"
 import react from 'react';
+import {useRouter} from "next/navigation";
 
 export default function Navbar() {
+const router = useRouter();
+const   Tologin = () => {
+    router.push("/login");
+
+}
 
     return (
         <div className="shadow mb-2">
@@ -31,7 +37,7 @@ export default function Navbar() {
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="#">Support</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600">
                             <button
-                                className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">Login
+                                className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white" onClick={Tologin}>Login
                             </button>
                         </li>
                     </ul>
