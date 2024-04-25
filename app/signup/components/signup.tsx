@@ -34,7 +34,7 @@ export default function Signup()
                                        placeholder="Email"/>
                             </div>
                         </div>
-                        <div className="mb-4 flex flex-col pt-4">
+                        <div className="flex flex-col pt-4">
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="password" id="login-password"
