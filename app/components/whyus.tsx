@@ -5,7 +5,7 @@ export default function Whyus() {
     return (
         <div className="w-auto">
             <div className="mx-auto mt-10 w-full max-w-screen-xl px-4">
-                <div className="w-12 border-b-2 border-pink-500 lg:border-b-4"></div>
+                <div className="w-12 border-b-2 border-blue-600 lg:border-b-4"></div>
                 <h2 className="mt-6 mb-10 text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">Why
                     Us?</h2>
                 <div className="flex flex-col justify-between lg:flex-row lg:flex-wrap">
