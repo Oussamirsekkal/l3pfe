@@ -4,7 +4,7 @@ export default function Footer() {
 
 
     return (
-        <footer className="bg-gray-50">
+        <footer className="">
             <div
                 className="mx-auto grid max-w-screen-xl gap-y-8 gap-x-12 px-4 py-10 md:grid-cols-2 xl:grid-cols-4 xl:px-10 my-10">
                 <div className="max-w-sm">
@@ -49,7 +49,7 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="bg-gray-100">
+            <div className="">
                 <div
                     className="mx-auto flex max-w-screen-xl flex-col gap-y-4 px-4 py-3 text-center text-gray-500 sm:flex-row sm:justify-between sm:text-left">
                     <div className="">© 2024 KidCode | All Rights Reserved</div>
