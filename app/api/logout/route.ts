@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
-export async function deletecookie(name :string) {
+ async function deletecookie(name :string) {
     cookies().set(name, '', { maxAge: 0, secure: true, httpOnly: true, path: '/' });
 }
 
