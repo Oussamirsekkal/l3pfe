@@ -1,8 +1,43 @@
-import react from "react";
+"use client"
+import React, { useState } from "react";
+import {useRouter} from "next/navigation";
 
 
 export default function Login()
 {
+    const router = useRouter();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        });
+
+
+        if (!response.ok) {
+            alert('An error occurred in the response');
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error);
+            return;
+        }
+        router.push('/profile');
+        router.refresh();
+    };
 
     return (
 
@@ -16,12 +51,14 @@ export default function Login()
                     </p>
                     <p className="mt-6 text-center font-medium md:text-left">Sign in to your account below.</p>
 
-                    <form className="flex flex-col items-stretch pt-3 md:pt-8">
+                    <form method='POST' className="flex flex-col items-stretch pt-3 md:pt-8" onSubmit={handleSubmit}>
                         <div className="flex flex-col pt-4">
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="email" id="login-email"
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                                       value={email}
+                                       onChange={(e) => setEmail(e.target.value)}
                                        placeholder="Email"/>
                             </div>
                         </div>
@@ -29,6 +66,8 @@ export default function Login()
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="password" id="login-password"
+                                       value={password}
+                                       onChange={(e) => setPassword(e.target.value)}
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                                        placeholder="Password"/>
                             </div>

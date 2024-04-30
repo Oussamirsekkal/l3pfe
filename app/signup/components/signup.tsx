@@ -1,9 +1,48 @@
-import react from "react";
-
-
+"use client"
+import React, { useState } from "react";
+import {useRouter} from "next/navigation";
 
 export default function Signup()
 {
+    const router = useRouter();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+            }),
+        });
+
+        if (!response.ok) {
+            alert('An error occurred in the response');
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error);
+            return;
+        }
+        router.push('/login');
+    };
 
     return (
         <div className="flex w-auto flex-wrap text-slate-800">
@@ -15,11 +54,13 @@ export default function Signup()
                     </p>
                     <p className="mt-6 text-center font-medium md:text-left">Create your account</p>
 
-                    <form className="flex flex-col items-stretch pt-3 md:pt-8">
+                    <form method="POST" className="flex flex-col items-stretch pt-3 md:pt-8" onSubmit={handleSubmit}>
                         <div className="flex flex-col pt-4">
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="text" id="full-Name"
+                                       value={name}
+                                       onChange={(e) => setName(e.target.value)}
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                                        placeholder="Full Name"/>
                             </div>
@@ -30,6 +71,8 @@ export default function Signup()
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="email" id="login-email"
+                                       value={email}
+                                       onChange={(e) => setEmail(e.target.value)}
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                                        placeholder="Email"/>
                             </div>
@@ -38,6 +81,8 @@ export default function Signup()
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="password" id="login-password"
+                                       value={password}
+                                       onChange={(e) => setPassword(e.target.value)}
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                                        placeholder="Password"/>
                             </div>
@@ -47,6 +92,8 @@ export default function Signup()
                             <div
                                 className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                                 <input type="password" id="confirm-login-password"
+                                       value={confirmPassword}
+                                       onChange={(e) => setConfirmPassword(e.target.value)}
                                        className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                                        placeholder="Confirm your password"/>
                             </div>

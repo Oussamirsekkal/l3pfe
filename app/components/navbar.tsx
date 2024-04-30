@@ -1,13 +1,41 @@
+
 "use client"
-import react from 'react';
 import {useRouter} from "next/navigation";
+import jwtDecode from "jsonwebtoken";
 
-export default function Navbar() {
-const router = useRouter();
-const   Tologin = () => {
-    router.push("/login");
 
+
+
+interface NavbarProps {
+    isLoggedIn: boolean;
 }
+
+
+export default function Navbar({ isLoggedIn}: NavbarProps) {
+const router = useRouter();
+    const signOut = async () => {
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error('Logout failed');
+            }
+
+            router.push('/login');
+            router.refresh();
+
+        } catch (error) {
+            console.error('An error occurred:', error);
+
+        }
+    };
+
+    const handleLogin = () => {
+        router.push('/login');
+        router.refresh();
+    };
 
     return (
         <div className="shadow mb-2">
@@ -36,9 +64,21 @@ const   Tologin = () => {
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="#">Features</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="#">Support</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-                            <button
-                                className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white" onClick={Tologin}>Login
-                            </button>
+                            {isLoggedIn ? (
+                                <button
+                                    className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
+                                    onClick={signOut}
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <button
+                                    className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
+                                    onClick={handleLogin}
+                                >
+                                    Login
+                                </button>
+                            )}
                         </li>
                     </ul>
                 </nav>

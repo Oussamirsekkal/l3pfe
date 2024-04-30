@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
+import { cookies } from 'next/headers';
+import jwtDecode from 'jsonwebtoken';
+import NavbarServer from "@/app/components/navbarserver";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,6 +12,11 @@ export const metadata: Metadata = {
   title: "E-learning",
   description: "E-learning platform for kids",
 };
+
+const cookieStore = cookies();
+const token = cookieStore.get('auth')?.value;
+
+const isLoggedIn = token ? true : false;
 
 export default function RootLayout({
   children,
@@ -20,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
 
       <body className={inter.className}>
-      <Navbar/>
+<NavbarServer/>
       {children}
       <Footer/>
       </body>
