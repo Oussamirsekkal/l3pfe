@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
- async function deletecookie(name :string) {
-    cookies().set(name, '', { maxAge: 0, secure: true, httpOnly: true, path: '/' });
-}
+
 
 export async function POST(req: Request) {
+    async function deletecookie(name :string) {
+        cookies().set(name, '', { maxAge: 0, secure: true, httpOnly: true, path: '/' });
+    }
     if (req.method !== 'POST') {
         return NextResponse.json(new Error('Method not allowed'), {status: 405});
     }
