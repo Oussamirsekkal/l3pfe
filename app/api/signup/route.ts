@@ -8,6 +8,7 @@ export async function POST(req: Request) {
     if (req.method !== 'POST') {
         return NextResponse.json(new Error('Method not allowed'), {status: 405});
     }
+    //
     const { name, email, password } = await req.json();
     const salt = await bcrypt. genSalt(10);
     const hashedPassword = await bcrypt.hash(password,salt);
