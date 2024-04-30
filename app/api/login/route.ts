@@ -8,16 +8,18 @@ const expirecookie = 24*60*60*100;
 
 const prisma = new PrismaClient();
 
-export async function setcookie(name :string,value:string) {
 
-    cookies().set(name, value, { maxAge:expirecookie ,secure:true, httpOnly:true,path:'/' });
-}
-export async function getcookie() {
-    cookies().get('name')
-}
+
 export async function POST(req: Request) {
     if (req.method !== 'POST') {
         return NextResponse.json(new Error('Method not allowed'), {status: 405});
+    }
+    async function getcookie() {
+        cookies().get('name')
+    }
+    async function setcookie(name :string,value:string) {
+
+        cookies().set(name, value, { maxAge:expirecookie ,secure:true, httpOnly:true,path:'/' });
     }
 
     const {email, password} = await req.json();
