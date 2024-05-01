@@ -13,11 +13,6 @@ export const metadata: Metadata = {
   description: "E-learning platform for kids",
 };
 
-const cookieStore = cookies();
-const token = cookieStore.get('auth')?.value;
-
-const isLoggedIn = token ? true : false;
-
 export default function RootLayout({
   children,
 }: Readonly<{
