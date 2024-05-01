@@ -1,25 +1,15 @@
-import { NextResponse, } from 'next/server';
+import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers'
 
 const expirecookie = 24*60*60*100;
 
 const prisma = new PrismaClient();
 
-
-
 export async function POST(req: Request) {
     if (req.method !== 'POST') {
         return NextResponse.json(new Error('Method not allowed'), {status: 405});
-    }
-    async function getcookie() {
-        cookies().get('name')
-    }
-    async function setcookie(name :string,value:string) {
-
-        cookies().set(name, value, { maxAge:expirecookie ,secure:true, httpOnly:true,path:'/' });
     }
 
     const {email, password} = await req.json();
@@ -40,9 +30,10 @@ export async function POST(req: Request) {
             return NextResponse.json({error: 'Invalid password'}, {status: 400});
         }
         const token = jwt.sign({id: user.id, email: user.email}, '2381741', {expiresIn: '24h'});
-        await setcookie('auth',token);
 
-        return NextResponse.json({ token, email: user.email });
+        const res = NextResponse.json({ token, email: user.email });
+        res.headers.set('Set-Cookie', `auth=${token}; Max-Age=${expirecookie}; Secure; HttpOnly; Path=/`);
+        return res;
     } catch (error) {
         console.error(error);
         return NextResponse.json({message: 'Something went wrong'}, {status: 500});
