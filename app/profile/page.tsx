@@ -7,12 +7,16 @@ export default function Home() {
     const token = cookieStore.get("auth")?.value;
 
     if (!token) {
-        // Handle case when token is not present
+
         return <div>Please log in to access this page.</div>;
     }
 
-    //const decodedToken = jwt.decode(token) as { email: string };
-    const decoded = jwt.verify(token, '2381741') as { email: string };
+    const secretkey = process.env.JWT_SECRET;
+    if (!secretkey) {
+        throw new Error('JWT Secret is not defined');
+    }
+
+    const decoded = jwt.verify(token,secretkey ) as { email: string };
     const email = decoded.email;
 
     return <Profile email={email} />;

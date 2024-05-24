@@ -3,8 +3,6 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const expirecookie = 24*60*60*100;
-
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
@@ -33,10 +31,16 @@ export async function POST(req: Request) {
         if (!isPasswordValid) {
             return NextResponse.json({error: 'Invalid password'}, {status: 400});
         }
-        const token = jwt.sign({id: user.id, email: user.email}, '2381741', {expiresIn: '24h'});
+        const secretkey = process.env.JWT_SECRET;
+        if (!secretkey) {
+            throw new Error('JWT Secret is not defined');
+        }
+
+
+        const token = jwt.sign({id: user.id, email: user.email, isAdmin: user.isAdmin}, secretkey, {expiresIn: '24h'});
 
         const res = NextResponse.json({ token, email: user.email });
-        res.headers.set('Set-Cookie', `auth=${token}; Max-Age=${expirecookie}; Secure; HttpOnly; Path=/`);
+        res.headers.set('Set-Cookie', `auth=${token}; Secure; HttpOnly; Path=/`);
         return res;
     } catch (error) {
         console.error(error);

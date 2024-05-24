@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import {useRouter} from "next/navigation";
+import jwt from "jsonwebtoken";
 
 
 export default function Login()
@@ -23,7 +24,6 @@ export default function Login()
             }),
         });
 
-
         if (!response.ok) {
             alert('An error occurred in the response');
             return;
@@ -35,7 +35,18 @@ export default function Login()
             alert(data.error);
             return;
         }
-        router.push('/profile');
+
+        // Decode the JWT token
+        const decodedToken = jwt.decode(data.token);
+
+        if (decodedToken && typeof decodedToken === 'object' && 'isAdmin' in decodedToken) {
+            if (decodedToken.isAdmin === true) {
+                router.push('/Dashboard');
+            } else {
+                router.push('/profile');
+            }
+        }
+
         router.refresh();
     };
 
