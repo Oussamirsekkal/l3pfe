@@ -62,7 +62,7 @@ const router = useRouter();
                     <ul className="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/profile">Profile</a></li>
-                        <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="#">Support</a></li>
+                        <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600">
                             {isLoggedIn ? (
                                 <button

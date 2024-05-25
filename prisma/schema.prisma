@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_DEVELOPMENT")
+  url      = env("DATABASE_URL_PRODUCTION")
 }
 
 model users {
@@ -13,4 +13,12 @@ model users {
   email    String? @unique @db.VarChar(50)
   password String? @db.VarChar(255)
   isAdmin  Boolean @default(false)
+}
+model courses {
+  id               Int      @id @default(autoincrement())
+  title            String   @db.VarChar(255)
+  description      String   @db.VarChar(255)
+  difficulty_level String   @db.VarChar(50)
+  created_at       DateTime @default(now())
+  imageUrl         String?  @db.VarChar(255)
 }

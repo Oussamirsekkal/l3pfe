@@ -21,8 +21,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "@/prisma";
+
 interface User {
     id: number;
     name: string | null; // Allow 'null' for 'fullName'
@@ -289,7 +289,7 @@ export default function EnhancedTable() {
 
     return (
 
-        <div className="my-5">
+        <div className="my-5 w-auto">
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
