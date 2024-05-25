@@ -37,7 +37,7 @@ export default async function Course({ params }: { params: Params }) {
                             {courseData.title} </a>
                         <p className="overflow-hidden text-sm">
                             {courseData.description}</p>
-
+                        {/**/}
                         <div className="flex flex-col text-gray-700 sm:flex-row">
                             <div className="flex h-fit space-x-2 text-sm font-medium">
                                 <div
