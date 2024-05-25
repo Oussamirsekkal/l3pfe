@@ -21,50 +21,17 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 interface User {
     id: number;
-    fullName: string;
-    email: string;
+    name: string | null; // Allow 'null' for 'fullName'
+    email: string | null; // Allow 'null' for 'email'
     // Add other fields as needed
 }
 
-function createUser(
-    id: number,
-    fullName: string,
-    email: string,
-    // Add other fields as needed
-): User {
-    return {
-        id,
-        fullName,
-        email,
-        // Add other fields as needed
-    };
-}
 
-const users: readonly User[] = [
-    createUser(1, 'John Doe', 'john.doe@example.com'),
-    createUser(2, 'Jane Smith', 'jane.smith@example.com'),
-    createUser(3, 'Michael Johnson', 'michael.johnson@example.com'),
-    createUser(4, 'Emily Davis', 'emily.davis@example.com'),
-    createUser(5, 'David Wilson', 'david.wilson@example.com'),
-    createUser(6, 'Sophia Anderson', 'sophia.anderson@example.com'),
-    createUser(7, 'Daniel Taylor', 'daniel.taylor@example.com'),
-    createUser(8, 'Olivia Thomas', 'olivia.thomas@example.com'),
-    createUser(9, 'Matthew Moore', 'matthew.moore@example.com'),
-    createUser(10, 'Ava Martin', 'ava.martin@example.com'),
-    createUser(11, 'Joshua Thompson', 'joshua.thompson@example.com'),
-    createUser(12, 'Emma Jackson', 'emma.jackson@example.com'),
-    createUser(13, 'Andrew White', 'andrew.white@example.com'),
-    createUser(14, 'Isabella Harris', 'isabella.harris@example.com'),
-    createUser(15, 'Joseph Garcia', 'joseph.garcia@example.com'),
-    createUser(16, 'Mia Martinez', 'mia.martinez@example.com'),
-    createUser(17, 'William Robinson', 'william.robinson@example.com'),
-    createUser(18, 'Sophia Hernandez', 'sophia.hernandez@example.com'),
-    createUser(19, 'Daniel Clark', 'daniel.clark@example.com'),
-    createUser(20, 'Emma Rodriguez', 'emma.rodriguez@example.com'),
-];
+
 
 interface HeadCell {
     disablePadding: boolean;
@@ -75,14 +42,14 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'fullName',
+        id: 'id',
         numeric: false,
         disablePadding: true,
-        label: 'Select All',
+        label: 'id',
     },
 
     {
-        id: 'fullName',
+        id: 'name',
         numeric: false,
         disablePadding: false,
         label: 'Full Name',
@@ -107,12 +74,12 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     return 0;
 }
 
-function getComparator<Key extends keyof any>(
+function getComparator<Key extends keyof User>(
     order: Order,
     orderBy: Key,
 ): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
+    a: User,
+    b: User,
 ) => number {
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
@@ -248,8 +215,22 @@ export default function EnhancedTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [dense, setDense] = React.useState(false);
+    const [users, setUsers] = React.useState<User[]>([]);
 
+    React.useEffect(() => {
+        const getUsers = async () => {
+            const response = await fetch('/api/getusers', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const usersFromDb = await response.json();
+            setUsers(usersFromDb);
+        };
 
+        getUsers();
+    }, []);
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -307,6 +288,8 @@ export default function EnhancedTable() {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
     return (
+
+        <div className="my-5">
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
@@ -354,7 +337,7 @@ export default function EnhancedTable() {
                                             <TableCell component="th" id={labelId} scope="row" padding="none">
                                                 {user.id}
                                             </TableCell>
-                                            <TableCell align="left">{user.fullName}</TableCell>
+                                            <TableCell align="left">{user.name}</TableCell>
                                             <TableCell align="left">{user.email}</TableCell>
                                         </TableRow>
                                     );
@@ -386,6 +369,7 @@ export default function EnhancedTable() {
                 label="Dense padding"
             />
         </Box>
+        </div>
     );
 }
 
