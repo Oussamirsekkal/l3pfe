@@ -19,7 +19,7 @@ export default function NavbarServer() {
             isAdmin = (decodedToken.payload as { isAdmin: boolean }).isAdmin;
         }
     }
-    console.log("is admin", isAdmin);
+    //console.log("is admin", isAdmin);
 
     return <Navbar isLoggedIn={isLoggedIn} isAdmin={isAdmin} />;
 }

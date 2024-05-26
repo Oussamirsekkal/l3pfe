@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
+import prisma from "@/prisma";
 
 export async function POST(req: Request) {
     if (req.method !== 'POST') {
@@ -23,13 +22,13 @@ export async function POST(req: Request) {
         }
 
         if (user.password === null) {
-            return NextResponse.json({error: 'Invalid password'}, {status: 400});
+            return NextResponse.json({error: 'Invalid credentials'}, {status: 400});
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return NextResponse.json({error: 'Invalid password'}, {status: 400});
+            return NextResponse.json({error: 'Invalid credentials'}, {status: 400});
         }
         const secretkey = process.env.JWT_SECRET;
         if (!secretkey) {

@@ -65,7 +65,7 @@ export default function Overview() {
                     <div
                         className="flex h-48 items-center justify-between overflow-hidden rounded-xl bg-white px-4 py-4 shadow-sm">
                         <div>
-                            <h3 className="mb-1 text-xl font-medium text-gray-600">Total Transactions</h3>
+                            <h3 className="mb-1 text-xl font-medium text-gray-600">Total courses</h3>
                             <p className="text-base text-gray-400">April 2024</p>
                             <p className="text-2xl font-medium text-gray-500">1,540</p>
                         </div>
@@ -80,7 +80,7 @@ export default function Overview() {
                     <div
                         className="flex h-48 items-center justify-between overflow-hidden rounded-xl bg-white px-4 py-4 shadow-sm">
                         <div>
-                            <h3 className="mb-1 text-xl font-medium text-gray-600">Pending Orders</h3>
+                            <h3 className="mb-1 text-xl font-medium text-gray-600">Pending courses</h3>
                             <p className="text-base text-gray-400">April 2024</p>
                             <p className="text-2xl font-medium text-gray-500">720</p>
                         </div>

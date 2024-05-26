@@ -64,7 +64,9 @@ const router = useRouter();
                         {isAdmin && (
                             <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Dashboard">Dashboard</a></li>
                         )}
-                        <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/profile">Profile</a></li>
+                        {isLoggedIn && !isAdmin && (
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/profile">Profile</a>
+                            </li>)}
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>
 

@@ -9,40 +9,49 @@ export default function Signup()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const [error, setError] = useState("");
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
-        {/*hello*/}
-
-        const response = await fetch('/api/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
-            }),
-        });
-
-        if (!response.ok) {
-            alert('An error occurred in the response');
+            setError("Passwords do not match");
             return;
         }
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.error);
+        if (!name || !email || !password) {
+            setError("Please enter your name, email, and password.");
             return;
         }
-        router.push('/login');
+
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                if (data.message === "Email already exists") {
+                    setError("An account with this email already exists. Please use a different email or sign in.");
+                } else {
+                    setError('An error occurred in the response');
+                }
+                return;
+            }
+
+            router.push('/login');
+            setError(""); // Clear the error message after successful sign-up
+        } catch (error) {
+            console.error(error);
+            setError('An error occurred during the signup process');
+        }
     };
 
     return (
@@ -104,6 +113,11 @@ export default function Signup()
                             up
                         </button>
                     </form>
+                    {error && (
+                        <div className="mt-4 rounded-md bg-red-100 p-4 text-center text-sm text-red-700">
+                            <span>{error}</span>
+                        </div>
+                    )}
                     <div className="py-12 text-center">
                         <p className="text-gray-600">
                             Already have an account? &nbsp;

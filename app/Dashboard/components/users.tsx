@@ -21,6 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import prisma from "@/prisma";
 
 interface User {
@@ -289,23 +290,29 @@ export default function EnhancedTable() {
 
     return (
 
-        <div className="my-5 w-auto">
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
+        <div className="container mx-auto px-4 py-8">
+            <div className="overflow-x-auto">
+                <div className="flex justify-center mb-4">
+                    <h1 className="text-xl font-bold">User Management</h1>
+                </div>
                 <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={users.length}
-                        />
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                    <Checkbox
+                                        color="primary"
+                                        indeterminate={selected.length > 0 && selected.length < users.length}
+                                        checked={users.length > 0 && selected.length === users.length}
+                                        onChange={handleSelectAllClick}
+                                    />
+                                </TableCell>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Email</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
                         <TableBody>
                             {users
                                 .slice()
@@ -324,8 +331,9 @@ export default function EnhancedTable() {
                                             tabIndex={-1}
                                             key={user.id}
                                             selected={isItemSelected}
+                                            className="border-b"
                                         >
-                                            <TableCell padding="checkbox">
+                                            <TableCell padding="checkbox" className="px-4 py-2">
                                                 <Checkbox
                                                     color="primary"
                                                     checked={isItemSelected}
@@ -334,41 +342,41 @@ export default function EnhancedTable() {
                                                     }}
                                                 />
                                             </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                            <TableCell component="th" id={labelId} scope="row" padding="none"
+                                                       className="px-4 py-2">
                                                 {user.id}
                                             </TableCell>
-                                            <TableCell align="left">{user.name}</TableCell>
-                                            <TableCell align="left">{user.email}</TableCell>
+                                            <TableCell align="left" className="px-4 py-2">{user.name}</TableCell>
+                                            <TableCell align="left" className="px-4 py-2">{user.email}</TableCell>
+                                            <TableCell align="left" className="px-4 py-2">
+                                                <button className="text-blue-500 hover:text-blue-700 mr-2"><FaEdit/>
+                                                </button>
+                                                <button className="text-red-500 hover:text-red-700"><FaTrashAlt/>
+                                                </button>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={users.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                label="Dense padding"
-            />
-        </Box>
+                <div className="flex items-center justify-between mt-4">
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={users.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                        label="Dense padding"
+                        labelPlacement="start"
+                    />
+                </div>
+            </div>
         </div>
     );
 }

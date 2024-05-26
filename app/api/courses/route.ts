@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import prisma from "@/prisma";
-
 
 export async function GET(req: Request) {
     if (req.method !== 'GET') {
@@ -9,10 +7,10 @@ export async function GET(req: Request) {
     }
 
     try {
-        const users = await prisma.users.findMany();
-        return NextResponse.json(users);
+        const courses = await prisma.courses.findMany();
+        return NextResponse.json(courses);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({message: 'Something went wrong'}, {status: 500});
+        return NextResponse.json({ message: "An error occurred while fetching courses" }, { status: 500 });
     }
 }

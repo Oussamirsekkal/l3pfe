@@ -4,7 +4,7 @@ import Users from "@/app/Dashboard/components/users";
 import ManageCourses from "@/app/Dashboard/components/managecourses";
 import Settings from "@/app/Dashboard/components/settings";
 import Security from "@/app/Dashboard/components/security";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { FaUsers } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { FaBookOpen } from "react-icons/fa";
@@ -15,6 +15,14 @@ import { FaBars, FaTimes } from "react-icons/fa";
 export default function Dashboard() {
 const [activesection,setactivesection] = useState("overview");
     const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/courses')
+            .then(response => response.json())
+            .then(data => setCourses(data))
+            .catch(error => console.error(error));
+    }, []);
     return (
 
         <>
@@ -91,7 +99,7 @@ const [activesection,setactivesection] = useState("overview");
                 </aside>
                 {activesection === "overview" && <Overview/>}
                 {activesection === "users" && <Users/>}
-                {activesection === "managecourses" && <ManageCourses/>}
+                {activesection === "managecourses" && <ManageCourses courses={courses} />}
                 {activesection === "settings" && <Settings/>}
                 {activesection === "security" && <Security/>}
 

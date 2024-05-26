@@ -10,44 +10,46 @@ export default function Login()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
-        });
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
 
-        if (!response.ok) {
-            alert('An error occurred in the response');
-            return;
-        }
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.error);
-            return;
-        }
-
-        // Decode the JWT token
-        const decodedToken = jwt.decode(data.token);
-
-        if (decodedToken && typeof decodedToken === 'object' && 'isAdmin' in decodedToken) {
-            if (decodedToken.isAdmin === true) {
-                router.push('/Dashboard');
-            } else {
-                router.push('/profile');
+            if (!response.ok) {
+                const data = await response.json();
+                setError(data.error || 'An error occurred during sign-in');
+                return;
             }
-        }
 
-        router.refresh();
+            const data = await response.json();
+
+            // Decode the JWT token
+            const decodedToken = jwt.decode(data.token);
+
+            if (decodedToken && typeof decodedToken === 'object' && 'isAdmin' in decodedToken) {
+                if (decodedToken.isAdmin === true) {
+                    router.push('/Dashboard');
+                } else {
+                    router.push('/profile');
+                }
+            }
+
+            router.refresh();
+        } catch (error) {
+            setError('An error occurred during sign-in');
+            console.error(error);
+        }
     };
 
     return (
@@ -90,6 +92,11 @@ export default function Login()
                             in
                         </button>
                     </form>
+                    {error && (
+                        <div className="mt-4 rounded-md bg-red-100 p-4 text-center text-sm text-red-700">
+                            <span>{error}</span>
+                        </div>
+                    )}
                     <div className="py-12 text-center">
                         <p className="text-gray-600">
                             Don&apos;t have an account?
