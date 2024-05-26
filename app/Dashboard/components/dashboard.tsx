@@ -16,7 +16,7 @@ export default function Dashboard() {
 const [activesection,setactivesection] = useState("overview");
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [courses, setCourses] = useState([]);
-
+    {}
     useEffect(() => {
         fetch('/api/courses')
             .then(response => response.json())
