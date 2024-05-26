@@ -17,6 +17,7 @@ export default function Signup()
             alert("Passwords do not match");
             return;
         }
+        {/**/}
 
         const response = await fetch('/api/signup', {
             method: 'POST',
