@@ -58,9 +58,10 @@ export default function ManageCourses({ courses }: ManageCoursesProps) {
                             <th scope="col" className="py-3 px-6 text-left text-sm font-semibold text-gray-900">
                                 Created At
                             </th>
-                            <th scope="col" className="relative py-3 pl-3 pr-4 sm:pr-6">
-                                <span className="sr-only">Additional Info</span>
+                            <th scope="col" className="py-3 px-6 text-left text-sm font-semibold text-gray-900">
+                                Actions
                             </th>
+
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 bg-white">

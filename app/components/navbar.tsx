@@ -1,11 +1,7 @@
-
 "use client"
 import {useRouter} from "next/navigation";
 import jwtDecode from "jsonwebtoken";
-import {FaUser} from "react-icons/fa";
-
-
-
+import {FaUser, FaSearch} from "react-icons/fa";
 
 interface NavbarProps {
     isLoggedIn: boolean;
@@ -14,7 +10,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
-const router = useRouter();
+    const router = useRouter();
     const signOut = async () => {
         try {
             const response = await fetch('/api/logout', {
@@ -61,18 +57,30 @@ const router = useRouter();
                 </label>
                 <nav aria-label="Header Navigation"
                      className="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
-                    <ul className="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
+                    {/* Modern and responsive search bar */}
+                    <div className="mx-auto flex w-full max-w-md items-center rounded-full border border-gray-300 bg-white px-4 py-2 md:mx-0 md:mr-4">
+                        <FaSearch className="text-gray-500" />
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="ml-2 w-full border-none bg-transparent outline-none"
+                        />
+                    </div>
+                    <ul className="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0 md:ml-4">
                         {isAdmin && (
-                            <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Dashboard">Dashboard</a></li>
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a
+                                href="/Dashboard">Dashboard</a></li>
                         )}
                         {isLoggedIn && !isAdmin && (
                             <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/profile">Profile</a>
                             </li>)}
-                        <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>
-                        <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>
+                        { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>)}
+                        { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>)}
+                        { isLoggedIn && !isAdmin && (  <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/benefits">Benefits</a></li>)}
+
                         {isLoggedIn && (
                             <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600">
-                                <FaUser className="mr-2" />
+                                <FaUser className="mr-2"/>
                                 <span>{name}</span>
                             </li>
                         )}
@@ -98,6 +106,4 @@ const router = useRouter();
             </div>
         </div>
     );
-
-
 }
