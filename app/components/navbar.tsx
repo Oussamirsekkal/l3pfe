@@ -2,6 +2,7 @@
 "use client"
 import {useRouter} from "next/navigation";
 import jwtDecode from "jsonwebtoken";
+import {FaUser} from "react-icons/fa";
 
 
 
@@ -9,10 +10,10 @@ import jwtDecode from "jsonwebtoken";
 interface NavbarProps {
     isLoggedIn: boolean;
     isAdmin?: boolean;
+    name?: string;
 }
 
-
-export default function Navbar({ isLoggedIn,isAdmin}: NavbarProps) {
+export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
 const router = useRouter();
     const signOut = async () => {
         try {
@@ -69,7 +70,12 @@ const router = useRouter();
                             </li>)}
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>
-
+                        {isLoggedIn && (
+                            <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600">
+                                <FaUser className="mr-2" />
+                                <span>{name}</span>
+                            </li>
+                        )}
                         <li className="text-gray-600 md:mr-12 hover:text-blue-600">
                             {isLoggedIn ? (
                                 <button

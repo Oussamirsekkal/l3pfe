@@ -1,7 +1,7 @@
 import Profile from "@/app/profile/components/profile";
 import jwt from 'jsonwebtoken';
 import {cookies} from "next/headers";
-
+import prisma from "@/prisma"
 export default function Home() {
     const cookieStore = cookies();
     const token = cookieStore.get("auth")?.value;
@@ -17,7 +17,10 @@ export default function Home() {
     }
 
     const decoded = jwt.verify(token,secretkey ) as { email: string };
+    const decodedid = jwt.verify(token,secretkey ) as { id: any };
     const email = decoded.email;
+    const id = decodedid.id;
 
-    return <Profile email={email} />;
+
+    return <Profile email={email} id={id}  />;
 }

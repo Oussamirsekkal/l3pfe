@@ -8,11 +8,20 @@ datasource db {
 }
 
 model users {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(50)
-  email    String? @unique @db.VarChar(50)
-  password String? @db.VarChar(255)
-  isAdmin  Boolean @default(false)
+  id       Int       @id @default(autoincrement())
+  name     String?   @db.VarChar(50)
+  email    String?   @unique @db.VarChar(50)
+  password String?   @db.VarChar(255)
+  isAdmin  Boolean   @default(false)
+  children children[] // This creates a one-to-many relation between users and children
+}
+
+model children {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(50)
+  age      Int
+  userId   Int
+  user     users  @relation(fields: [userId], references: [id]) // This sets up the relation field
 }
 model courses {
   id               Int      @id @default(autoincrement())
