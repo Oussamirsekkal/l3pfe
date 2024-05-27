@@ -76,7 +76,7 @@ export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
                             </li>)}
                         { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>)}
                         { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>)}
-                        { isLoggedIn && !isAdmin && (  <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/benefits">Benefits</a></li>)}
+                        { !isAdmin && (  <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/benefits">Benefits</a></li>)}
 
                         {isLoggedIn && (
                             <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600">
