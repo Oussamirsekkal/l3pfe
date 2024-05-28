@@ -293,88 +293,105 @@ export default function EnhancedTable() {
         <div className="container mx-auto px-4 py-8">
             <div className="overflow-x-auto">
                 <div className="flex justify-center mb-4">
-                    <h1 className="text-xl font-bold">User Management</h1>
+                    <h1 className="text-2xl font-bold">User Management</h1>
                 </div>
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell padding="checkbox">
-                                    <Checkbox
-                                        color="primary"
-                                        indeterminate={selected.length > 0 && selected.length < users.length}
-                                        checked={users.length > 0 && selected.length === users.length}
-                                        onChange={handleSelectAllClick}
-                                    />
-                                </TableCell>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {users
-                                .slice()
-                                .sort(getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((user, index) => {
-                                    const isItemSelected = isSelected(user.id);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+                <div className="bg-white shadow-md rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <Checkbox
+                                    color="primary"
+                                    indeterminate={selected.length > 0 && selected.length < users.length}
+                                    checked={users.length > 0 && selected.length === users.length}
+                                    onChange={handleSelectAllClick}
+                                />
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                ID
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Email
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                        {users
+                            .slice()
+                            .sort(getComparator(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((user, index) => {
+                                const isItemSelected = isSelected(user.id);
+                                const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, user.id)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={user.id}
-                                            selected={isItemSelected}
-                                            className="border-b"
-                                        >
-                                            <TableCell padding="checkbox" className="px-4 py-2">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none"
-                                                       className="px-4 py-2">
-                                                {user.id}
-                                            </TableCell>
-                                            <TableCell align="left" className="px-4 py-2">{user.name}</TableCell>
-                                            <TableCell align="left" className="px-4 py-2">{user.email}</TableCell>
-                                            <TableCell align="left" className="px-4 py-2">
-                                                <button className="text-blue-500 hover:text-blue-700 mr-2"><FaEdit/>
-                                                </button>
-                                                <button className="text-red-500 hover:text-red-700"><FaTrashAlt/>
-                                                </button>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                return (
+                                    <tr
+                                        key={user.id}
+                                        className={`${isItemSelected ? 'bg-gray-100' : ''} hover:bg-gray-50 cursor-pointer`}
+                                        onClick={(event) => handleClick(event, user.id)}
+                                        role="checkbox"
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                    >
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <Checkbox
+                                                color="primary"
+                                                checked={isItemSelected}
+                                                inputProps={{
+                                                    'aria-labelledby': labelId,
+                                                }}
+                                            />
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500" id={labelId}>
+                                            {user.id}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button className="text-blue-600 hover:text-blue-900 mr-2">
+                                                <FaEdit/>
+                                            </button>
+                                            <button className="text-red-600 hover:text-red-900">
+                                                <FaTrashAlt/>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
                 <div className="flex items-center justify-between mt-4">
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={users.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                    <FormControlLabel
-                        control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                        label="Dense padding"
-                        labelPlacement="start"
-                    />
+                    <div>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={users.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </div>
+                    <div className="flex items-center">
+                        <FormControlLabel
+                            control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                            label="Dense padding"
+                            labelPlacement="start"
+                            className="ml-4"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

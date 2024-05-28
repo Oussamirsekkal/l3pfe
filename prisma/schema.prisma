@@ -13,7 +13,7 @@ model users {
   email    String?   @unique @db.VarChar(50)
   password String?   @db.VarChar(255)
   isAdmin  Boolean   @default(false)
-  children children[] // This creates a one-to-many relation between users and children
+  children children[]
 }
 
 model children {
@@ -30,4 +30,5 @@ model courses {
   difficulty_level String   @db.VarChar(50)
   created_at       DateTime @default(now())
   imageUrl         String?  @db.VarChar(255)
+  urlCourse        String?  @db.VarChar(255) // New field
 }

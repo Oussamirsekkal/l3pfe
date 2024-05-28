@@ -5,6 +5,7 @@ import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 
 
 
+
 // Assuming you have a function to fetch course data
 async function getCourseData(courseId: number) {
     return prisma.courses.findUnique({ where: { id: courseId } });
@@ -13,7 +14,6 @@ async function getCourseData(courseId: number) {
 export default async function Course({ params }: { params: Params }) {
     const courseId = Number(params.courseId); // Convert to number
     const courseData = await getCourseData(courseId);
-
     if (!courseData) {
         return notFound();
     }
@@ -47,7 +47,7 @@ export default async function Course({ params }: { params: Params }) {
 
                                 <div className="rounded-full bg-blue-100 px-2 py-0.5 text-blue-700">160 Enrolled</div>
                             </div>
-                            <a href="#"
+                            <a href={courseData.urlCourse ?? '#'}
                                className="my-5 rounded-md px-5 py-2 text-center transition hover:scale-105 bg-orange-600 text-white sm:ml-auto">Enroll
                                 Now </a>
                         </div>
