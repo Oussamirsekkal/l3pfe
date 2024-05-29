@@ -5,6 +5,7 @@ import Footer from "@/app/components/footer";
 import { cookies } from 'next/headers';
 import jwtDecode from 'jsonwebtoken';
 import NavbarServer from "@/app/components/navbarserver";
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
 <NavbarServer/>
       {children}
+<Toaster />
       <Footer/>
       </body>
     </html>

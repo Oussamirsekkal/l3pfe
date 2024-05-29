@@ -4,8 +4,13 @@ import prisma from "@/prisma";
 import React from 'react';
 
 async function getAllCourses() {
-    return prisma.courses.findMany();
+    return prisma.courses.findMany({
+        orderBy: {
+            id: 'asc', // Order by id in ascending order
+        },
+    });
 }
+
 
 export default async function Courses() {
     const courses = await getAllCourses();

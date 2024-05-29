@@ -1,12 +1,49 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 interface AddChildProps {
     onCancel: () => void;
+    userId: number;
 }
-const AddChild: React.FC<AddChildProps> = ({ onCancel }) => {
-    return(
+
+const AddChild: React.FC<AddChildProps> = ({ onCancel,userId }) => {
+    const [childName, setChildName] = useState('');
+    const [childAge, setChildAge] = useState('');
+
+    const handleAddChild = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        // Check if the child's name and age are not empty
+        if (!childName || !childAge) {
+            console.error('Child name and age cannot be empty');
+            return;
+        }
+
+        const response = await fetch('/api/add-children', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ childName, childAge,userId }), // Include the child's name and age in the request body
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Child added successfully
+            // Clear the form
+            setChildName('');
+            setChildAge('');
+            toast.success('child added successfully');
+        } else {
+
+            console.error(data.message);
+            toast.error('error while adding child');
+        }
+    };
+
+    return (
         <>
             <div className="fixed inset-0 flex items-center justify-center z-50">
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onCancel}></div>
@@ -41,14 +78,20 @@ const AddChild: React.FC<AddChildProps> = ({ onCancel }) => {
                                                htmlFor="childName">Child&apos;s
                                             Name</label>
                                         <input className="rounded-lg border px-2 py-2 shadow-sm outline-none focus:ring"
-                                               id="childName" type="text"/>
+                                               id="childName" type="text"
+                                               value={childName}
+                                               onChange={(e) => setChildName(e.target.value)}
+                                        />
                                     </div>
                                     <div className="col-span-1 flex flex-col">
                                         <label className="mb-1 ml-3 font-semibold text-gray-500"
                                                htmlFor="childAge">Child&apos;s
                                             Age</label>
                                         <input className="rounded-lg border px-2 py-2 shadow-sm outline-none focus:ring"
-                                               id="childAge" type="text"/>
+                                               id="childAge" type="text"
+                                               value={childAge}
+                                               onChange={(e) => setChildAge(e.target.value)}
+                                        />
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-between sm:flex-row">
@@ -57,8 +100,8 @@ const AddChild: React.FC<AddChildProps> = ({ onCancel }) => {
                                         onClick={onCancel}>Cancel
                                     </button>
                                     <button
-                                        className="group my-2 flex w-full items-center justify-center rounded-lg bg-blue-700 py-2 text-center font-bold text-white outline-none transition sm:order-1 sm:w-40 focus:ring">
-                                        Add Child
+                                        className="group my-2 flex w-full items-center justify-center rounded-lg bg-blue-700 py-2 text-center font-bold text-white outline-none transition sm:order-1 sm:w-40 focus:ring"
+                                        onClick={handleAddChild}>Add Child
                                     </button>
                                 </div>
                             </div>
@@ -67,9 +110,7 @@ const AddChild: React.FC<AddChildProps> = ({ onCancel }) => {
                 </div>
             </div>
         </>
-
-
     );
-
 }
+
 export default AddChild;

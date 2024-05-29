@@ -33,7 +33,7 @@ const [activesection,setactivesection] = useState("overview");
                     <label htmlFor="sidebar-open"
                            className="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-6 peer-checked:bg-gray-600 peer-checked:text-white absolute top-0 z-20 mx-4 cursor-pointer md:hidden"
                            onClick={() => setSidebarOpen(!isSidebarOpen)}>
-                        {isSidebarOpen ? <FaTimes className="h-6 w-6"/> : <FaBars className="h-6 w-6"/>}
+                        {isSidebarOpen ? <FaTimes className="h-4 w-4"/> : <FaBars className="h-4 w-4"/>}
                     </label>
                     <nav aria-label="Sidebar Navigation"
                          className="peer-checked:w-64 left-0 z-10 flex h-auto w-0 flex-col overflow-hidden bg-black text-white transition-all md:h-auto md:w-64 lg:w-72">

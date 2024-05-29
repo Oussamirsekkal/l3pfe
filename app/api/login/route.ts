@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         }
 
 
-        const token = jwt.sign({id: user.id, email: user.email,name : user.name ,isAdmin: user.isAdmin}, secretkey, {expiresIn: '24h'});
+        const token = jwt.sign({id: user.id, email: user.email,name : user.name ,isAdmin: user.isAdmin}, secretkey);
 
         const res = NextResponse.json({ token, email: user.email });
         res.headers.set('Set-Cookie', `auth=${token}; Secure; HttpOnly; Path=/`);

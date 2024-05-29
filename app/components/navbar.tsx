@@ -2,6 +2,7 @@
 import {useRouter} from "next/navigation";
 import jwtDecode from "jsonwebtoken";
 import {FaUser, FaSearch} from "react-icons/fa";
+import {useState} from "react";
 
 interface NavbarProps {
     isLoggedIn: boolean;
@@ -11,6 +12,19 @@ interface NavbarProps {
 
 export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
     const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState('');
+
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleSearchSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        // Redirect to the search results page
+        router.push(`/search?query=${searchTerm}`);
+    };
     const signOut = async () => {
         try {
             const response = await fetch('/api/logout', {
@@ -38,7 +52,7 @@ export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
     return (
         <div className="shadow mb-2">
             <div
-                className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
+                className="relative flex max-w-auto-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
                 <a href="/" className="flex items-center whitespace-nowrap text-2xl font-black">
       <span className="mr-2 text-4xl text-blue-600">
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
@@ -58,33 +72,41 @@ export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
                 <nav aria-label="Header Navigation"
                      className="peer-checked:mt-8 peer-checked:max-h-56 flex max-h-0 w-full flex-col items-center justify-between overflow-hidden transition-all md:ml-24 md:max-h-full md:flex-row md:items-start">
                     {/* Modern and responsive search bar */}
-                    <div className="mx-auto flex w-full max-w-md items-center rounded-full border border-gray-300 bg-white px-4 py-2 md:mx-0 md:mr-4">
-                        <FaSearch className="text-gray-500" />
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            className="ml-2 w-full border-none bg-transparent outline-none"
-                        />
+                    <div
+                        className="mx-auto flex w-full max-w-md items-center rounded-full border border-gray-300 bg-white px-4 py-2 md:mx-0 md:mr-4 my-1">
+                        <form onSubmit={handleSearchSubmit} className="flex w-full items-center">
+                            <FaSearch className="text-gray-500" onClick={handleSearchSubmit}/>
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="ml-2 w-full border-none bg-transparent outline-none"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                            />
+                        </form>
                     </div>
                     <ul className="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0 md:ml-4">
                         {isAdmin && (
-                            <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600 my-1"><a
                                 href="/Dashboard">Dashboard</a></li>
                         )}
                         {isLoggedIn && !isAdmin && (
-                            <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/profile">Profile</a>
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600 my-1"><a href="/profile">Profile</a>
                             </li>)}
-                        { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/courses">Courses</a></li>)}
-                        { isLoggedIn && !isAdmin && ( <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/Blockly">Blockly</a></li>)}
-                        { !isAdmin && (  <li className="text-gray-600 md:mr-12 hover:text-blue-600"><a href="/benefits">Benefits</a></li>)}
+                        {isLoggedIn && !isAdmin && (
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600 my-1"><a href="/courses">Courses</a>
+                            </li>)}
+                        {!isAdmin && (
+                            <li className="text-gray-600 md:mr-12 hover:text-blue-600 my-1"><a href="/benefits">Benefits</a>
+                            </li>)}
 
                         {isLoggedIn && (
-                            <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600">
+                            <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600 my-1">
                                 <FaUser className="mr-2"/>
                                 <span>{name}</span>
                             </li>
                         )}
-                        <li className="text-gray-600 md:mr-12 hover:text-blue-600">
+                        <li className="text-gray-600 md:mr-12 hover:text-blue-600 my-1">
                             {isLoggedIn ? (
                                 <button
                                     className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
