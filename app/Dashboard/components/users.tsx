@@ -23,6 +23,14 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import prisma from "@/prisma";
+import toast from "react-hot-toast";
+import EditUserForm from "@/app/Dashboard/components/edituser";
+import { ToastContainer } from 'react-toastify';
+import { toast as tst } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 interface User {
     id: number;
@@ -217,6 +225,11 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [dense, setDense] = React.useState(false);
     const [users, setUsers] = React.useState<User[]>([]);
+    const [editingUser, setEditingUser] = React.useState<User | null>(null);
+
+    const handleEdit = (user: User) => {
+        setEditingUser(user);
+    };
 
     React.useEffect(() => {
         const getUsers = async () => {
@@ -287,7 +300,84 @@ export default function EnhancedTable() {
     const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    const handleDelete = async (id: number) => {
+        const toastLoadingId = tst.loading("Waiting for confirmation...");
 
+        try {
+            const confirmDelete = await tst.promise(
+                new Promise<void>((resolve, reject) => {
+                    const deleteUser = async () => {
+                        try {
+                            const response = await fetch('/api/deleteuser', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ id }),
+                            });
+
+                            const data = await response.json();
+
+                            if (!response.ok || !data.success) {
+                                tst.error(data.message || 'Error deleting user');
+                                reject();
+                                return;
+                            }
+
+                            // Remove the deleted user from the local state
+                            setUsers(users.filter((user) => user.id !== id));
+                            tst.success('User deleted successfully');
+                            resolve();
+                        } catch (error) {
+                            tst.error('Failed to delete user');
+                            console.error('Failed to delete user:', error);
+                            reject();
+                        }
+                    };
+
+                    const confirmationJSX = (
+                        <div>
+                            <p>Are you sure you want to delete this user?</p>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
+                                    onClick={() => {
+                                        tst.dismiss(toastLoadingId);
+                                        reject();
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    onClick={deleteUser}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    );
+
+                    tst.update(toastLoadingId, {
+                        render: confirmationJSX,
+                        type: "info",
+                        isLoading: false,
+                        autoClose: false,
+                        closeOnClick: false,
+                        pauseOnHover: false,
+                        draggable: false,
+                    });
+                }),
+                {
+                    pending: "Waiting for confirmation...",
+                }
+            );
+
+            await confirmDelete;
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
     return (
 
         <div className="container mx-auto px-4 py-8">
@@ -359,10 +449,12 @@ export default function EnhancedTable() {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <button className="text-blue-600 hover:text-blue-900 mr-2">
+                                            <button className="text-blue-600 hover:text-blue-900 mr-2"
+                                                    onClick={() => handleEdit(user)}>
                                                 <FaEdit/>
                                             </button>
-                                            <button className="text-red-600 hover:text-red-900">
+                                            <button className="text-red-600 hover:text-red-900"
+                                                    onClick={() => handleDelete(user.id)}>
                                                 <FaTrashAlt/>
                                             </button>
                                         </td>
@@ -371,6 +463,16 @@ export default function EnhancedTable() {
                             })}
                         </tbody>
                     </table>
+                    {editingUser && (
+                        <EditUserForm
+                            user={editingUser}
+                            onUpdate={(updatedUser) => {
+                                setUsers(users.map((user) => user.id === updatedUser.id ? updatedUser : user));
+                                setEditingUser(null);
+                            }}
+                            onCancel={() => setEditingUser(null)} // Add this line
+                        />
+                    )}
                 </div>
                 <div className="flex items-center justify-between mt-4">
                     <div>

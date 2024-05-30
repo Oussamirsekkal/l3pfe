@@ -101,7 +101,7 @@ export default function Navbar({ isLoggedIn,isAdmin,name}: NavbarProps) {
                             </li>)}
 
                         {isLoggedIn && (
-                            <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600 my-1">
+                            <li className="flex items-center text-gray-600 md:mr-12 hover:text-blue-600 my-1" >
                                 <FaUser className="mr-2"/>
                                 <span>{name}</span>
                             </li>

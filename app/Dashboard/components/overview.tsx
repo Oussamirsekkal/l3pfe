@@ -1,5 +1,39 @@
 "use client"
+import react, {useEffect} from "react";
+import {useState} from "react";
+import * as React from "react";
+interface User {
+    id: number;
+    name: string | null; // Allow 'null' for 'fullName'
+    email: string | null; // Allow 'null' for 'email'
+    // Add other fields as needed
+}
+
+
 export default function Overview() {
+    const [users, setUsers] = React.useState<User[]>([]);
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/courses')
+            .then(response => response.json())
+            .then(data => setCourses(data))
+            .catch(error => console.error(error));
+    }, []);
+    React.useEffect(() => {
+        const getUsers = async () => {
+            const response = await fetch('/api/getusers', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const usersFromDb = await response.json();
+            setUsers(usersFromDb);
+        };
+
+        getUsers();
+    }, []);
 
     return(
 
@@ -17,8 +51,14 @@ export default function Overview() {
                         className="flex h-48 items-center justify-between overflow-hidden rounded-xl bg-white px-4 py-4 shadow-sm">
                         <div>
                             <h3 className="mb-1 text-xl font-medium text-gray-600">Total Users</h3>
-                            <p className="text-base text-gray-400">April 2024</p>
-                            <p className="text-2xl font-medium text-gray-500">100,221</p>
+                            <p className="text-base text-gray-400">
+                                {new Date().toLocaleString('default', {month: 'long'})} {new Date().getFullYear()}
+                            </p>
+                            {users.length > 0 ? (
+                                <p className="text-2xl font-medium text-gray-500">{users.length}</p>
+                            ) : (
+                                <p className="text-2xl font-medium text-gray-500">Loading ...</p>
+                            )}
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-200" fill="none"
@@ -32,8 +72,14 @@ export default function Overview() {
                         className="flex h-48 items-center justify-between overflow-hidden rounded-xl bg-white px-4 py-4 shadow-sm">
                         <div>
                             <h3 className="mb-1 text-xl font-medium text-gray-600">Total courses</h3>
-                            <p className="text-base text-gray-400">April 2024</p>
-                            <p className="text-2xl font-medium text-gray-500">1,540</p>
+                            <p className="text-base text-gray-400">
+                                {new Date().toLocaleString('default', {month: 'long'})} {new Date().getFullYear()}
+                            </p>
+                            {courses.length > 0 ? (
+                                <p className="text-2xl font-medium text-gray-500">{courses.length}</p>
+                            ) : (
+                                <p className="text-2xl font-medium text-gray-500">Loading ...</p>
+                            )}
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-200" fill="none"
@@ -47,8 +93,10 @@ export default function Overview() {
                         className="flex h-48 items-center justify-between overflow-hidden rounded-xl bg-white px-4 py-4 shadow-sm">
                         <div>
                             <h3 className="mb-1 text-xl font-medium text-gray-600">Pending courses</h3>
-                            <p className="text-base text-gray-400">April 2024</p>
-                            <p className="text-2xl font-medium text-gray-500">720</p>
+                            <p className="text-base text-gray-400">
+                                {new Date().toLocaleString('default', {month: 'long'})} {new Date().getFullYear()}
+                            </p>
+                            <p className="text-2xl font-medium text-gray-500">10</p>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-200" fill="none"

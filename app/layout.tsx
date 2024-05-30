@@ -6,7 +6,8 @@ import { cookies } from 'next/headers';
 import jwtDecode from 'jsonwebtoken';
 import NavbarServer from "@/app/components/navbarserver";
 import { Toaster } from 'react-hot-toast';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={inter.className}>
 <NavbarServer/>
       {children}
+<ToastContainer />
 <Toaster />
       <Footer/>
       </body>
