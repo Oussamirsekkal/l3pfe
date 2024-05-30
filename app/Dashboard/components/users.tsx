@@ -28,8 +28,7 @@ import EditUserForm from "@/app/Dashboard/components/edituser";
 import { ToastContainer } from 'react-toastify';
 import { toast as tst } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import useSWR from "swr";
 
 
 interface User {
@@ -234,18 +233,18 @@ export default function EnhancedTable() {
 
     const [refreshKey, setRefreshKey] = React.useState(0);
 
-    React.useEffect(() => {
-        const getUsers = async () => {
-            const response = await fetch('/api/getusers', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const usersFromDb = await response.json();
-            setUsers(usersFromDb);
-        };
+    const getUsers = async () => {
+        const response = await fetch('/api/getusers', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const usersFromDb = await response.json();
+        setUsers(usersFromDb);
+    };
 
+    React.useEffect(() => {
         getUsers();
     }, [refreshKey]); // Add refreshKey to the dependency array
 
@@ -328,11 +327,13 @@ export default function EnhancedTable() {
                                 return;
                             }
 
-                            // Remove the deleted user from the local state
+
                             setUsers(users.filter((user) => user.id !== id));
+                           await getUsers();
                             tst.success('User deleted successfully');
                             resolve();
                         } catch (error) {
+                            await getUsers();
                             tst.error('Failed to delete user');
                             console.error('Failed to delete user:', error);
                             reject();
@@ -382,6 +383,7 @@ export default function EnhancedTable() {
         } catch (error) {
             console.error('Error deleting user:', error);
         }
+        await getUsers()
     };
     return (
 
