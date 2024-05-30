@@ -8,8 +8,10 @@ export default function Home() {
                 <div className="mr-2">
                     <h2 className="mb-4 text-4xl font-medium">A Better <span className="text-blue-600">Learning Experience</span>
                     </h2>
-                    <p className="mb-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum nemo obcaecati
-                        commodi itaque aliquam.</p>
+                    <p className="mb-6">Our educational platform uses Blockly to teach children programming in an
+                        interactive and engaging way. With our visual programming interface, kids can learn coding
+                        concepts by dragging and dropping code blocks, making it easy for them to grasp programming
+                        fundamentals.</p>
                     <div className="mb-4 space-y-4">
                         <div className="flex space-x-2">
         <span className="text-blue-400">

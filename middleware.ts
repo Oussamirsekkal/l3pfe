@@ -30,8 +30,15 @@ export default async function Middleware(req: NextRequest) {
     if(['/Dashboard'].includes(req.nextUrl.pathname) && !isAdmin){
         return NextResponse.redirect(new URL('/login', req.url));
     }
+    if (['/courses'].includes(req.nextUrl.pathname) && !cookie?.value) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
+    if (['/search'].includes(req.nextUrl.pathname) && !cookie?.value) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
 
 
 
-    return NextResponse.next();
+
+        return NextResponse.next();
 }

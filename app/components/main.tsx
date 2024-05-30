@@ -7,7 +7,7 @@ export default function Main()
         <div className="">
 
             <div
-                className="mx-auto h-full px-4 py-20 md:py-36 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">
+                className="mx-auto h-full px-4 py-20 md:py-36 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-auto-xl lg:px-8">
                 <div className="flex flex-col items-center justify-between lg:flex-row">
                     <div className=" ">
                         <div className="lg:max-w-xl lg:pr-5">
@@ -25,14 +25,16 @@ export default function Main()
                                 <span
                                     className="my-1 inline-block border-b-8 border-blue-600 bg-orange-400 px-4 font-bold text-white">Kids</span>
                             </h2>
-                            <p className="text-base text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit
-                                voluptatem accusantium doloremque it.</p>
+                            <p className="text-base text-gray-700">
+                                Welcome to our educational platform, where we make coding fun and accessible for kids.
+                                Start exploring our interactive courses today!
+                            </p>
                         </div>
                         <div className="mt-10 flex flex-col items-center md:flex-row">
-                            <a href="/"
+                            <a href="/courses"
                                className="mb-3 inline-flex h-12 w-full items-center justify-center rounded bg-blue-700 px-6 font-medium tracking-wide text-white shadow-md transition hover:bg-blue-800 focus:outline-none md:mr-4 md:mb-0 md:w-auto">Start
                                 Now </a>
-                            <a href="/" aria-label=""
+                            <a href="/benefits" aria-label=""
                                className="group inline-flex items-center font-semibold text-blue-600"
                             >Watch how it works
                                 <svg xmlns="http://www.w3.org/2000/svg"
