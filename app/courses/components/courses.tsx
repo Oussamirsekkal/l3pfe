@@ -62,7 +62,7 @@ const Courses: React.FC<CoursesProps> = ({ courses ,id,childs }) => {
             {selectedChild && (
                 <>
                     <img
-                        className="w-full h-screen  hidden lg:inline-block opacity-50"
+                        className="w-full h-screen border-none  hidden lg:inline-block opacity-0"
                     />
 
                     <div
