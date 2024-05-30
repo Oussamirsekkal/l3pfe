@@ -10,12 +10,21 @@ export async function POST(req: Request) {
     const { id } = body;
 
     try {
-        // First, delete the child records associated with the user
-        await prisma.children.deleteMany({
+        // Check if the user has any children
+        const children = await prisma.children.findMany({
             where: {
                 userId: Number(id),
             },
         });
+
+        // If the user has children, delete them
+        if (children.length > 0) {
+            await prisma.children.deleteMany({
+                where: {
+                    userId: Number(id),
+                },
+            });
+        }
 
         // Then, delete the user record
         const deletedUser = await prisma.users.delete({

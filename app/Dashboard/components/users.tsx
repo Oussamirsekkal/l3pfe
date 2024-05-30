@@ -229,7 +229,10 @@ export default function EnhancedTable() {
 
     const handleEdit = (user: User) => {
         setEditingUser(user);
+        setRefreshKey((oldKey) => oldKey + 1);
     };
+
+    const [refreshKey, setRefreshKey] = React.useState(0);
 
     React.useEffect(() => {
         const getUsers = async () => {
@@ -244,7 +247,8 @@ export default function EnhancedTable() {
         };
 
         getUsers();
-    }, []);
+    }, [refreshKey]); // Add refreshKey to the dependency array
+
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -374,6 +378,7 @@ export default function EnhancedTable() {
             );
 
             await confirmDelete;
+            setRefreshKey((oldKey) => oldKey + 1);
         } catch (error) {
             console.error('Error deleting user:', error);
         }
