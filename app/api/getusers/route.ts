@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import prisma from "@/prisma";
 
+const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
     if (req.method !== 'GET') {
-        return NextResponse.json(new Error('Method not allowed'), {status: 405});
+        return NextResponse.json(new Error('Method not allowed'), { status: 405 });
     }
 
     try {
@@ -13,6 +13,8 @@ export async function GET(req: Request) {
         return NextResponse.json(users);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({message: 'Something went wrong'}, {status: 500});
+        return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
+    } finally {
+        await prisma.$disconnect();
     }
 }
