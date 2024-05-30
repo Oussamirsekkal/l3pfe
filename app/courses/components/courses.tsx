@@ -75,7 +75,7 @@ const Courses: React.FC<CoursesProps> = ({ courses ,id,childs }) => {
                             </div>
                             <div className="relative mt-4">
                                 <img
-                                    src="https://freepngimg.com/thumb/girl/168680-woman-young-free-clipart-hd.png"
+                                    src="/coursesimages/girl.png"
                                     alt="girl image for promot pricing plan"
                                 />
                             </div>
