@@ -9,6 +9,7 @@ export default function Whyus() {
                     <div className="w-12 border-b-2 border-blue-600 lg:border-b-4 mx-auto"></div>
                     <h2 className="mt-6 mb-10 text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">Why
                         Us?</h2>
+                    {/**/}
                 </div>
                 <div className="flex flex-col justify-between lg:flex-row lg:flex-wrap">
                     <div className="mt-8 lg:mt-10 lg:w-1/2">
