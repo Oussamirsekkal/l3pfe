@@ -60,86 +60,82 @@ const Courses: React.FC<CoursesProps> = ({ courses ,id,childs }) => {
                 </div>
             )}
             {selectedChild && (
-                <>
-                    <img
-                        className="w-full h-screen border-none  hidden lg:inline-block opacity-0"
-                    />
-
-                    <div
-                        className="bg-gray-300 font-sans lg:bg-transparent flex flex-col lg:flex-row absolute justify-center lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 px-5 xl:px-0 py-8 lg:py-0 w-full gap-6 items-center lg:items-stretch">
-                {/* First portion */}
-                <div className="flex flex-col flex-wrap max-w-[360px] md:w-[384px] min-h-[572px] p-6 bg-[#365CCE] group rounded-2xl relative overflow-hidden">
-                    <div className="text-start text-white">
-                        <span className="font-light text-3xl ">Explore Courses</span>
-                        <br />
-                        <span className="font-bold text-3xl">For Children</span>
-                        <br />
-                        <div className="text-lg leading-7">
-                            Choose a course and start learning with our fun and interactive
-                            platform.
+                <div className="flex justify-center items-center min-h-screen  p-4">
+                    <div className="container mx-auto flex flex-col lg:flex-row gap-6 items-center lg:items-stretch">
+                        {/* First portion */}
+                        <div
+                            className="flex flex-col max-w-sm md:w-96 min-h-96 p-6 bg-blue-800 text-white rounded-2xl relative overflow-hidden">
+                            <div className="mb-4">
+                                <span className="font-light text-3xl block">Explore Courses</span>
+                                <span className="font-bold text-3xl block">For Children</span>
+                                <div className="text-lg leading-7 mt-4 mb-4">
+                                    Choose a course and start learning with our fun and interactive platform.
+                                </div>
+                                <RightArrow/>
+                            </div>
+                            <div className="relative mt-4">
+                                <img
+                                    src="https://freepngimg.com/thumb/girl/168680-woman-young-free-clipart-hd.png"
+                                    alt="girl image for promot pricing plan"
+                                />
+                            </div>
                         </div>
-                        <RightArrow />
-                    </div>
-                    <div className="absolute bottom-0 h-[300px]">
-                        <img
-                            src="https://freepngimg.com/thumb/girl/168680-woman-young-free-clipart-hd.png"
-                            alt="girl image for promot pricing plan"
-                        />
+
+                        {/* Course list */}
+                        {courses.map((course) => (
+                            <div
+                                key={course.id}
+                                className="flex flex-col max-w-sm md:w-96 min-h-96 p-6 bg-white rounded-2xl border border-gray-200 shadow-lg"
+                            >
+                                <div className="flex flex-row gap-4 items-center mb-4">
+                  <span className="bg-gray-100 p-2 rounded-full">
+                    <svg
+                        width="34"
+                        height="34"
+                        viewBox="0 0 34 34"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                      {/* Icon SVG path */}
+                    </svg>
+                  </span>
+                                    <span className="text-3xl font-bold">{course.title}</span>
+                                </div>
+                                <span className="block text-center text-gray-500 text-xl mb-4">About Course</span>
+                                <div className="flex flex-row gap-3 items-start text-left text-lg mb-4">
+                                    <RightIcon />
+                                    <span>{course.description}</span>
+                                </div>
+                                <div className="border border-dashed border-gray-300 my-4" />
+                                <div className="mt-auto">
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex items-baseline">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                className="h-6 w-6 text-green-500 mr-2"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M5 13l4 4L19 7"
+                                                />
+                                            </svg>
+                                            <span className="text-4xl font-bold">Free</span>
+                                        </div>
+                                        <Link className="w-full text-center rounded-xl font-semibold text-xl px-4 py-3 bg-blue-800 text-white" href={`/courses/${course.id}`}>
+                                                Start Course
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-                {/* Course list */}
-                {courses.map((course) => (
-                    <div
-                        key={course.id}
-                        className="flex flex-col max-w-[360px] md:w-[384px] min-h-[518px] md:min-h-[572px] p-6 bg-white group rounded-2xl border xl:border-none border-[#0B0641] relative"
-                    >
-                        <div className="flex flex-row gap-5 items-center">
-                            <span>
-                                <svg
-                                    width="34"
-                                    height="34"
-                                    viewBox="0 0 34 34"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    {/* Icon SVG path */}
-                                </svg>
-                            </span>
-                            <span className="text-3xl font-bold">{course.title}</span>
-                        </div>
-                        <span className="flex justify-center mt-4 text-[#A9A9AA] text-[22px]">
-                            About Course
-                        </span>
-                        <div className="flex flex-row gap-3 items-start mt-6 text-left text-lg">
-                            <div className="pt-1 shrink-0 ">
-                                <RightIcon />
-                            </div>
-                            <span>{course.description}</span>
-                        </div>
-                        <div className="border border-dashed border-[#A9A9AA] tracking-widest my-4" />
-                        <div className="h-28 ">
-                            <div className="flex flex-col gap-4 justify-between absolute left-6 right-6 bottom-6">
-                                <div className="flex items-baseline">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke="currentColor" className="h-6 w-6 text-green-500 mr-2">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                              d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    <span className="text-4xl font-bold ">Free</span>
-                                </div>
-                                <div className="flex align-bottom">
-                                    <Link
-                                        href={`/courses/${course.id}`}
-                                        className="w-full rounded-xl font-semibold text-xl px-4 py-3 bg-[#365CCE] text-white"
-                                    >
-                                        Start Course
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div> </>) }
+            )}
         </div>
     );
 }
