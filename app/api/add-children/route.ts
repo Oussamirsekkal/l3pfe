@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     const { childName, childAge, userId } = await req.json();
 
     // Check if the child's name and age are not empty
+    //hello
     if (!childName || !childAge) {
         return NextResponse.json({ message: 'Child name and age cannot be empty' }, { status: 400 });
     }
