@@ -1,20 +1,12 @@
 // prisma.ts
 import { PrismaClient } from '@prisma/client';
 
-// Check if PrismaClient is already defined in global object to prevent multiple instances of PrismaClient in development
-declare global {
-    var prisma: PrismaClient | undefined;
-}
+const globalForPrisma = global as unknown as { prisma: PrismaClient | undefined };
 
-let prisma: PrismaClient;
+const prisma = globalForPrisma.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV === 'production') {
-    prisma = new PrismaClient();
-} else {
-    if (!global.prisma) {
-        global.prisma = new PrismaClient();
-    }
-    prisma = global.prisma;
+if (process.env.NODE_ENV !== 'production') {
+    globalForPrisma.prisma = prisma;
 }
 
 export default prisma;
