@@ -13,7 +13,6 @@ interface User {
 export default function Overview() {
     const [users, setUsers] = React.useState<User[]>([]);
     const [courses, setCourses] = useState([]);
-
     useEffect(() => {
         fetch('/api/courses')
             .then(response => response.json())
@@ -34,6 +33,8 @@ export default function Overview() {
 
         getUsers();
     }, []);
+
+
 
     return(
 

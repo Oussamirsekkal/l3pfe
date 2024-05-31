@@ -6,7 +6,11 @@ import { FaChild, FaUsers, FaArrowRight } from 'react-icons/fa';
 import AddChild from "@/app/profile/components/addchild";
 import Managechildren from "@/app/profile/components/managechildren";
 import toast from 'react-hot-toast';
-
+interface Child {
+    id: number;
+    name: string;
+    age: number;
+}
 
 
 interface ProfileProps {
@@ -34,10 +38,28 @@ interface ProfileProps {
     const [showAddChild, setShowAddChild] = useState(false);
     const [showManageChild, setShowManageChild] = useState(false);
 
-    const [children, setChildren] = useState([]);
+    const [children, setChildren] = React.useState<Child[]>([]);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    async function fetchChildrenData() {
+        const response = await fetch('/api/children', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: id }),
+        });
 
+        if (!response.ok) {
+            throw new Error('Error fetching children data');
+        }
+
+        const data = await response.json();
+        return data.children;
+    }
+    React.useEffect(() => {
+        fetchChildrenData().then(setChildren);
+    }, []);
     const handlePasswordChange = async (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -237,8 +259,8 @@ interface ProfileProps {
                                     <FaArrowRight className="mr-2"/>
                                     Proceed
                                 </button>
-                                {showAddChild && <AddChild onCancel={handleCancelClick} userId={id}/>}
-                                {showManageChild && <Managechildren onCancel={handleCancelClick} childs={children}/>}
+                                {showAddChild && <AddChild onCancel={handleCancelClick} userId={id} setChildren={setChildren}/>}
+                                {showManageChild && <Managechildren onCancel={handleCancelClick} childs={children} setChildren={setChildren}/>}
                             </div>
                             <form className="flex flex-col lg:flex-row gap-8 lg:space-x-8 items-center">
                                 <div className="relative w-full lg:w-96 h-32">

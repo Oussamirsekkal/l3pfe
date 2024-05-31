@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+interface Child {
+    id: number;
+    name: string;
+    age: number;
+}
 
 interface AddChildProps {
     onCancel: () => void;
     userId: number;
+    setChildren: React.Dispatch<React.SetStateAction<Child[]>>; // Add this line
 }
 
-const AddChild: React.FC<AddChildProps> = ({ onCancel,userId }) => {
+const AddChild: React.FC<AddChildProps> = ({ onCancel,userId,setChildren }) => {
     const [childName, setChildName] = useState('');
     const [childAge, setChildAge] = useState('');
 
@@ -25,7 +31,7 @@ const AddChild: React.FC<AddChildProps> = ({ onCancel,userId }) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ childName, childAge,userId }), // Include the child's name and age in the request body
+            body: JSON.stringify({ childName, childAge, userId }), // Include the child's name and age in the request body
         });
 
         const data = await response.json();
@@ -36,8 +42,10 @@ const AddChild: React.FC<AddChildProps> = ({ onCancel,userId }) => {
             setChildName('');
             setChildAge('');
             toast.success('child added successfully');
-        } else {
 
+            // Update the children state
+            setChildren(prevChildren => [...prevChildren, data.child]);
+        } else {
             console.error(data.message);
             toast.error('error while adding child');
         }

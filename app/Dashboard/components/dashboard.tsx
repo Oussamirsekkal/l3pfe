@@ -11,18 +11,36 @@ import { FaBookOpen } from "react-icons/fa";
 import { FaCog } from "react-icons/fa";
 import { FaShieldAlt } from "react-icons/fa";
 import { FaBars, FaTimes } from "react-icons/fa";
+import OverviewWrapper from "@/app/Dashboard/components/OverviewWrapper";
 
-export default function Dashboard() {
+interface User {
+    id: number;
+    name: string | null;
+    email: string | null;
+}
+
+export default function Dashboard(clients : any) {
 const [activesection,setactivesection] = useState("overview");
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [courses, setCourses] = useState([]);
-    {}
+    const [users, setUsers] = useState<User[]>([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const handleUserDelete = (id: number) => {
+        setUsers(users.filter((user: User) => user.id !== id));
+        setRefreshKey(oldKey => oldKey + 1); // Add this line
+    };
     useEffect(() => {
         fetch('/api/courses')
             .then(response => response.json())
             .then(data => setCourses(data))
             .catch(error => console.error(error));
     }, []);
+    useEffect(() => {
+        fetch('/api/getusers')
+            .then(response => response.json())
+            .then(data => setUsers(data))
+            .catch(error => console.error(error));
+    }, [])
     return (
 
         <>
@@ -98,7 +116,7 @@ const [activesection,setactivesection] = useState("overview");
                     </nav>
                 </aside>
                 {activesection === "overview" && <Overview/>}
-                {activesection === "users" && <Users/>}
+                {activesection === "users" && <Users refreshkey={refreshKey}  users={users} setUsers={setUsers} handleUserDelete={handleUserDelete} />}
                 {activesection === "managecourses" && <ManageCourses courses={courses} />}
                 {activesection === "settings" && <Settings/>}
                 {activesection === "security" && <Security/>}

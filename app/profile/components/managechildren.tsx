@@ -8,7 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import toast from "react-hot-toast";
+import EditChildForm from "@/app/profile/components/editchild";
 interface Child {
     id: number;
     name: string;
@@ -18,6 +19,7 @@ interface Child {
 interface ManageChildrenProps {
     onCancel: () => void;
     childs: Child[];
+    setChildren: React.Dispatch<React.SetStateAction<Child[]>>; // Add this line
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -40,7 +42,56 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-const ManageChildren: React.FC<ManageChildrenProps> = ({ onCancel, childs }) => {
+const ManageChildren: React.FC<ManageChildrenProps> = ({ onCancel, childs ,setChildren }) => {
+    const [editingChild, setEditingChild] = React.useState<Child | null>(null);
+
+    const handleEdit = (child: Child) => {
+        setEditingChild(child);
+    };
+
+    const handleUpdate = async (updatedChild: Child) => {
+        try {
+            const response = await fetch('/api/editchildren', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedChild),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error updating child');
+            }
+
+            toast.success("Child updated successfully");
+            // Update the child in the local state
+            setChildren(childs.map((child) => child.id === updatedChild.id ? updatedChild : child));
+            setEditingChild(null);
+        } catch (error) {
+            toast.error("Error while updating child");
+            console.error('Failed to update child:', error);
+        }
+    };
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await fetch('/api/deletechildren', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error deleting child');
+            }
+           toast.success("child deleted successfully");
+            setChildren(childs.filter((child:Child) => child.id !== id));
+        } catch (error) {
+            toast.error("error while deleting child") ;
+            console.error('Failed to delete child:', error);
+        }
+    };
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onCancel}></div>
@@ -78,10 +129,10 @@ const ManageChildren: React.FC<ManageChildrenProps> = ({ onCancel, childs }) => 
                                     </StyledTableCell>
                                     <StyledTableCell align="right">{child.age}</StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <button className="mr-2 text-blue-500 hover:text-blue-700">
+                                        <button className="mr-2 text-blue-500 hover:text-blue-700" onClick={()=> handleEdit(child)}>
                                             <FaEdit/>
                                         </button>
-                                        <button className="text-red-500 hover:text-red-700">
+                                        <button className="text-red-500 hover:text-red-700"  onClick={() => handleDelete(child.id)}>
                                             <FaTrash/>
                                         </button>
                                     </StyledTableCell>
@@ -91,7 +142,16 @@ const ManageChildren: React.FC<ManageChildrenProps> = ({ onCancel, childs }) => 
                     </Table>
                 </TableContainer>
             </div>
+            {editingChild && (
+                <EditChildForm
+                    child={editingChild}
+                    onUpdate={handleUpdate}
+                    onCancel={() => setEditingChild(null)}
+                />
+            )}
+
         </div>
+
     );
 }
 

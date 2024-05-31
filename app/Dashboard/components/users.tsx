@@ -216,14 +216,27 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Toolbar>
     );
 }
-export default function EnhancedTable() {
+interface User {
+    id: number;
+    name: string | null;
+    email: string | null;
+}
+interface UsersProps {
+    users: User[];
+    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+    handleUserDelete: (id: number) => void;
+    refreshkey : number;
+}
+
+
+
+export default function EnhancedTable({ handleUserDelete,users,setUsers ,refreshkey }: UsersProps) {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof User>('id');
     const [selected, setSelected] = React.useState<readonly number[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [dense, setDense] = React.useState(false);
-    const [users, setUsers] = React.useState<User[]>([]);
     const [editingUser, setEditingUser] = React.useState<User | null>(null);
 
     const handleEdit = (user: User) => {
@@ -239,6 +252,7 @@ export default function EnhancedTable() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            cache: "no-store"
         });
         const usersFromDb = await response.json();
         setUsers(usersFromDb);
@@ -321,19 +335,28 @@ export default function EnhancedTable() {
 
                             const data = await response.json();
 
-                            if (!response.ok || !data.success) {
+                            if (!response.ok) {
                                 tst.error(data.message || 'Error deleting user');
                                 reject();
                                 return;
                             }
 
+                            if (data.success) {
+                                // Filter out the deleted user from the users array
+                                getUsers();
 
-                            setUsers(users.filter((user) => user.id !== id));
-                           await getUsers();
-                            tst.success('User deleted successfully');
-                            resolve();
+
+                                tst.success('User deleted successfully');
+                                handleUserDelete(id);
+                                resolve();
+
+                                // Dismiss the confirmation prompt
+                                tst.dismiss(toastLoadingId);
+                            } else {
+                                tst.error(data.message || 'Error deleting user');
+                                reject();
+                            }
                         } catch (error) {
-                            await getUsers();
                             tst.error('Failed to delete user');
                             console.error('Failed to delete user:', error);
                             reject();
@@ -383,7 +406,6 @@ export default function EnhancedTable() {
         } catch (error) {
             console.error('Error deleting user:', error);
         }
-        await getUsers()
     };
     return (
 
@@ -493,14 +515,7 @@ export default function EnhancedTable() {
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                     </div>
-                    <div className="flex items-center">
-                        <FormControlLabel
-                            control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                            label="Dense padding"
-                            labelPlacement="start"
-                            className="ml-4"
-                        />
-                    </div>
+
                 </div>
             </div>
         </div>
