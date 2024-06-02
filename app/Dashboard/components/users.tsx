@@ -38,7 +38,7 @@ interface User {
     id: number;
     name: string | null; // Allow 'null' for 'fullName'
     email: string | null; // Allow 'null' for 'email'
-    // Add other fields as needed
+    password?: string;
 }
 
 

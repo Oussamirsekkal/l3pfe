@@ -4,10 +4,11 @@ import toast from 'react-hot-toast';
 
 interface User {
     id: number;
-    name: string;
-    email: string;
-    password: string;
+    name: string | null; // Allow 'null' for 'fullName'
+    email: string | null; // Allow 'null' for 'email'
+    password?: string;
 }
+
 
 interface AddUserProps {
     onCancel: () => void;
