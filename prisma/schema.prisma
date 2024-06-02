@@ -32,3 +32,8 @@ model courses {
   imageUrl         String?  @db.VarChar(255)
   urlCourse        String?  @db.VarChar(255) // New field
 }
+model VisitedCourse {
+  id         String @id
+  childId    String
+  courseIds  String @default("[]") // Stored as a JSON string
+}
