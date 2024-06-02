@@ -18,16 +18,47 @@ interface User {
     name: string | null;
     email: string | null;
 }
-
-export default function Dashboard(clients : any) {
+interface Course  {
+    id: number;
+    title: string;
+    description: string;
+    difficulty_level: string;
+    created_at: Date;
+    imageUrl: string | null;
+};
+export default function Dashboard() {
 const [activesection,setactivesection] = useState("overview");
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState<Course[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [refreshKey, setRefreshKey] = useState(0);
-    const handleUserDelete = (id: number) => {
-        setUsers(users.filter((user: User) => user.id !== id));
-        setRefreshKey(oldKey => oldKey + 1); // Add this line
+
+    const handleDeleteUser = async (userId: number) => {
+        try {
+            const response = await fetch('/api/deleteuser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: userId }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error deleting user');
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Filter out the deleted user from the users array
+                const updatedUsers = users.filter(user => user.id !== userId);
+                setUsers(updatedUsers);
+            } else {
+                console.error(data.message || 'Error deleting user');
+            }
+        } catch (error) {
+            console.error('Failed to delete user:', error);
+        }
     };
     useEffect(() => {
         fetch('/api/courses')
@@ -41,11 +72,37 @@ const [activesection,setactivesection] = useState("overview");
             .then(data => setUsers(data))
             .catch(error => console.error(error));
     }, [])
+    const handleDeleteCourse = async (courseId: number) => {
+        try {
+            const response = await fetch('/api/deletecourse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: courseId }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error deleting course');
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Filter out the deleted course from the courses array
+                const updatedCourses = courses.filter(course => course.id !== courseId);
+                setCourses(updatedCourses);
+            } else {
+                console.error(data.message || 'Error deleting course');
+            }
+        } catch (error) {
+            console.error('Failed to delete course:', error);
+        }
+    };
     return (
 
         <>
             <div className="bg-slate-200 flex h-auto">
-
                 <aside className="relative z-50 md:relative">
                     <input type="checkbox" className="peer hidden" id="sidebar-open"/>
                     <label htmlFor="sidebar-open"
@@ -116,10 +173,10 @@ const [activesection,setactivesection] = useState("overview");
                     </nav>
                 </aside>
                 {activesection === "overview" && <Overview/>}
-                {activesection === "users" && <Users refreshkey={refreshKey}  users={users} setUsers={setUsers} handleUserDelete={handleUserDelete} />}
-                {activesection === "managecourses" && <ManageCourses courses={courses} />}
-                {activesection === "settings" && <Settings/>}
-                {activesection === "security" && <Security/>}
+                {activesection === "users" && <Users refreshkey={refreshKey}  users={users} setUsers={setUsers} handleUserDelete={handleDeleteUser} />}
+                {activesection === "managecourses" && <ManageCourses courses={courses} handleDeleteCourse={handleDeleteCourse} setCourses={setCourses} />}
+                {/*activesection === "settings" && <Settings/>*/}
+                {/*activesection === "security" && <Security/>*/}
 
 
             </div>

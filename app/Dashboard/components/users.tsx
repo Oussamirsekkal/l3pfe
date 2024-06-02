@@ -23,12 +23,15 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import prisma from "@/prisma";
-import toast from "react-hot-toast";
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+
 import EditUserForm from "@/app/Dashboard/components/edituser";
 import { ToastContainer } from 'react-toastify';
-import { toast as tst } from 'react-toastify';
+import { toast  } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useSWR from "swr";
+import AddUserForm from "@/app/Dashboard/components/AddUserForm";
 
 
 interface User {
@@ -238,7 +241,7 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [dense, setDense] = React.useState(false);
     const [editingUser, setEditingUser] = React.useState<User | null>(null);
-
+    const [isAddUserFormVisible, setIsAddUserFormVisible] = React.useState(false);
     const handleEdit = (user: User) => {
         setEditingUser(user);
         setRefreshKey((oldKey) => oldKey + 1);
@@ -318,46 +321,27 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
     const handleDelete = async (id: number) => {
-        const toastLoadingId = tst.loading("Waiting for confirmation...");
+        const toastLoadingId = toast.loading("Waiting for confirmation...");
 
         try {
-            const confirmDelete = await tst.promise(
+            const confirmDelete = await toast.promise(
                 new Promise<void>((resolve, reject) => {
                     const deleteUser = async () => {
                         try {
-                            const response = await fetch('/api/deleteuser', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ id }),
-                            });
+                            // Call the handleUserDelete function from props
+                            handleUserDelete(id);
 
-                            const data = await response.json();
-
-                            if (!response.ok) {
-                                tst.error(data.message || 'Error deleting user');
-                                reject();
-                                return;
-                            }
-
-                            if (data.success) {
-                                // Filter out the deleted user from the users array
-                                getUsers();
+                            // Show success message
+                            toast.success('User deleted successfully');
 
 
-                                tst.success('User deleted successfully');
-                                handleUserDelete(id);
-                                resolve();
+                            // Resolve the promise
+                            resolve();
 
-                                // Dismiss the confirmation prompt
-                                tst.dismiss(toastLoadingId);
-                            } else {
-                                tst.error(data.message || 'Error deleting user');
-                                reject();
-                            }
+                            // Dismiss the confirmation prompt
+                            toast.dismiss(toastLoadingId);
                         } catch (error) {
-                            tst.error('Failed to delete user');
+                            toast.error('Failed to delete user');
                             console.error('Failed to delete user:', error);
                             reject();
                         }
@@ -370,7 +354,7 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
                                 <button
                                     className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
                                     onClick={() => {
-                                        tst.dismiss(toastLoadingId);
+                                        toast.dismiss(toastLoadingId);
                                         reject();
                                     }}
                                 >
@@ -386,7 +370,7 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
                         </div>
                     );
 
-                    tst.update(toastLoadingId, {
+                    toast.update(toastLoadingId, {
                         render: confirmationJSX,
                         type: "info",
                         isLoading: false,
@@ -402,7 +386,7 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
             );
 
             await confirmDelete;
-            setRefreshKey((oldKey) => oldKey + 1);
+
         } catch (error) {
             console.error('Error deleting user:', error);
         }
@@ -411,8 +395,16 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
 
         <div className="container mx-auto px-4 py-8">
             <div className="overflow-x-auto">
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-between mb-4">
                     <h1 className="text-2xl font-bold">User Management</h1>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon/>}
+                        onClick={() => setIsAddUserFormVisible(true)}
+                    >
+                        Add User
+                    </Button>
                 </div>
                 <div className="bg-white shadow-md rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">
@@ -518,6 +510,12 @@ export default function EnhancedTable({ handleUserDelete,users,setUsers ,refresh
 
                 </div>
             </div>
+            {isAddUserFormVisible && (
+                <AddUserForm
+                    onCancel={() => setIsAddUserFormVisible(false)}
+                    setUsers={setUsers}
+                />
+            )}
         </div>
     );
 }

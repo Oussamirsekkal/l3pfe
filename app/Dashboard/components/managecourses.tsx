@@ -1,6 +1,11 @@
+"use client"
+import * as React from 'react';
 import { format } from 'date-fns';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-type Course = {
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import EditCourseForm from "@/app/Dashboard/components/EditCourseForm";
+interface Course  {
     id: number;
     title: string;
     description: string;
@@ -8,16 +13,91 @@ type Course = {
     created_at: Date;
     imageUrl: string | null;
 };
-type ManageCoursesProps = {
+interface ManageCoursesProps {
     courses: Course[];
+    setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
+    handleDeleteCourse: (courseId: number) => void;
 };
 
-export default function ManageCourses({ courses }: ManageCoursesProps) {
+
+export default function ManageCourses({ courses,handleDeleteCourse,setCourses }: ManageCoursesProps) {
+    const [editingCourse, setEditingCourse] = React.useState<Course | null>(null);
+
+    const handledelete = async (id: number) => {
+        const toastLoadingId = toast.loading("Waiting for confirmation...");
+
+        try {
+            const confirmDelete = await toast.promise(
+                new Promise<void>((resolve, reject) => {
+                    const deleteCourse = async () => {
+                        try {
+                            // Call the handleDeleteCourse function from props
+                            handleDeleteCourse(id);
+
+                            // Show success message
+                            toast.success('Course deleted successfully');
+
+                            // Resolve the promise
+                            resolve();
+
+                            // Dismiss the confirmation prompt
+                            toast.dismiss(toastLoadingId);
+                        } catch (error) {
+                            toast.error('Failed to delete course');
+                            console.error('Failed to delete course:', error);
+                            reject();
+                        }
+                    };
+
+                    const confirmationJSX = (
+                        <div>
+                            <p>Are you sure you want to delete this course?</p>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
+                                    onClick={() => {
+                                        toast.dismiss(toastLoadingId);
+                                        reject();
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    onClick={deleteCourse}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    );
+
+                    toast.update(toastLoadingId, {
+                        render: confirmationJSX,
+                        type: "info",
+                        isLoading: false,
+                        autoClose: false,
+                        closeOnClick: false,
+                        pauseOnHover: false,
+                        draggable: false,
+                    });
+                }),
+                {
+                    pending: "Waiting for confirmation...",
+                }
+            );
+
+            await confirmDelete;
+
+        } catch (error) {
+            console.error('Error deleting course:', error);
+        }
+    };
     return (
         <div className="w-auto">
             <div className="mx-auto mt-8 max-w-auto-lg px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-                    <p className="text-xl font-semibold text-gray-800 mb-4 sm:mb-0">All Courses</p>
+                    <p className="text-2xl font-bold">All Courses</p>
 
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
@@ -82,12 +162,15 @@ export default function ManageCourses({ courses }: ManageCoursesProps) {
                                 </td>
                                 <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap flex space-x-2 justify-center">
                                     <button
-                                        className="bg-blue-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md flex items-center">
+                                        className="bg-blue-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md flex items-center"
+                                        onClick={() => setEditingCourse(course)} // Set the editing course when the "Edit" button is clicked
+                                    >
                                         <FaEdit className="inline-block mr-2"/>
                                         Edit
                                     </button>
                                     <button
-                                        className="bg-blue-600 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md flex items-center">
+                                        className="bg-blue-600 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md flex items-center"
+                                        onClick={() => (handledelete(course.id))}>
                                         <FaTrash className="inline-block mr-2"/>
                                         Delete
                                     </button>
@@ -98,6 +181,16 @@ export default function ManageCourses({ courses }: ManageCoursesProps) {
                     </table>
                 </div>
             </div>
+            {editingCourse && (
+                <EditCourseForm
+                    course={editingCourse}
+                    onUpdate={(updatedCourse) => {
+                        setCourses(courses.map((course) => course.id === updatedCourse.id ? updatedCourse : course));
+                        setEditingCourse(null);
+                    }}
+                    onCancel={() => setEditingCourse(null)}
+                />
+            )}
         </div>
 
     );

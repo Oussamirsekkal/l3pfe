@@ -9,10 +9,7 @@ export async function GET(req: Request) {
     try {
         const users = await prisma.users.findMany();
         const response = NextResponse.json(users);
-
-        // Disable caching for this route
         response.headers.set('Cache-Control', 'no-store');
-
         return response;
     } catch (error) {
         console.error(error);

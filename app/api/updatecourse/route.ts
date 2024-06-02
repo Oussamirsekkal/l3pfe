@@ -7,21 +7,21 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { id, name, email } = body;
+    const { id, title, description, difficulty_level } = body;
 
     try {
-        const user = await prisma.users.update({
+        const course = await prisma.courses.update({
             where: {
                 id: Number(id),
             },
             data: {
-                name: name,
-                email: email
+                title: title,
+                description: description,
+                difficulty_level: difficulty_level
             }
         });
-       const response = NextResponse.json(user);
-       response.headers.set('Cache-Control', 'no-store');
-        return  response;
+
+        return NextResponse.json(course);
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });

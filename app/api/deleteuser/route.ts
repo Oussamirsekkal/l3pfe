@@ -32,8 +32,9 @@ export async function POST(req: Request) {
                 id: Number(id),
             },
         });
-
-        return NextResponse.json({ success: true });
+       const response = NextResponse.json({ success: true });
+       response.headers.set('Cache-Control', 'no-store');
+        return response;
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });

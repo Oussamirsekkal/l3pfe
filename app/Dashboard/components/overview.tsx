@@ -26,6 +26,7 @@ export default function Overview() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                cache : 'no-store'
             });
             const usersFromDb = await response.json();
             setUsers(usersFromDb);
@@ -42,8 +43,8 @@ export default function Overview() {
         <>
             <main className="flex-1 overflow-hidden transition-all duration-200">
 
-                <div className="mt-4 flex justify-between px-4 text-slate-500 md:px-10">
-                    <h2 className="text-xl font-medium md:pl-0 my-2">Overview</h2>
+                <div className="mt-4 flex justify-between px-4  md:px-10">
+                    <h2 className="text-2xl font-bold">Overview</h2>
                 </div>
 
                 <div className="m-4 grid grid-cols-1 gap-4 md:m-10 md:grid-cols-2 lg:grid-cols-3">

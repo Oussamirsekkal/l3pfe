@@ -3,25 +3,21 @@ import prisma from "@/prisma";
 
 export async function POST(req: Request) {
     if (req.method !== 'POST') {
-        return NextResponse.json(new Error('Method not allowed'), {status: 405});
+        return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
     const body = await req.json();
-    const { id, name, email } = body;
+    const { id } = body;
 
     try {
-        const user = await prisma.users.update({
+        // Then, delete the course record
+        const deletedCourse = await prisma.courses.delete({
             where: {
                 id: Number(id),
             },
-            data: {
-                name: name,
-                email: email
-            }
         });
-       const response = NextResponse.json(user);
-       response.headers.set('Cache-Control', 'no-store');
-        return  response;
+
+        return NextResponse.json({ success: true });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });

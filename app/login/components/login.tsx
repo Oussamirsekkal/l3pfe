@@ -112,9 +112,10 @@ export default function Login()
                     <span className="rounded-full bg-white px-3 py-1 font-medium text-blue-600">New Feature</span>
                     <p className="my-6 text-3xl font-semibold leading-10">Create block of code with <span
                         className="abg-white whitespace-nowrap py-2 text-cyan-300">drag and drop</span>.</p>
-                    <p className="mb-4">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt
-                        necessitatibus nostrum repellendus ab totam.</p>
-                    <a href="#" className="font-semibold tracking-wide text-white underline underline-offset-4">Learn
+                    <p className="my-6 text-2xl font-semibold leading-10">Unleash your child&apos;s creativity with
+                        drag-and-drop coding and engaging coding games
+                    </p>
+                    <a href="/benefits" className="font-semibold tracking-wide text-white underline underline-offset-4">Learn
                         More</a>
                 </div>
                 <img className="ml-8 w-11/12 max-w-lg rounded-lg object-cover" src=""/>
