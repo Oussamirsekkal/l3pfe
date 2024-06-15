@@ -12,7 +12,7 @@ export default function Footer() {
               </span>
                         </div>
                         <div className="text-gray-400">
-                            Our educational platform makes learning programming fun and engaging for kids.
+                            Our educational platform makes learning programming fun and engaging for kids...
                         </div>
                     </div>
                     <div>

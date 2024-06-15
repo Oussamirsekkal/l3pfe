@@ -193,8 +193,8 @@ const Courses: React.FC<CoursesProps> = ({ courses ,id,childs }) => {
 
                             <div className="relative">
                                 {/* Dropdown button */}
-                                <div className="flex justify-center mb-6">
-                                    <Button color="info" onClick={handleClick}>
+                                <div className="flex  text-white justify-center mb-6">
+                                    <Button color="inherit" onClick={handleClick}>
                                         {`Selected Child: ${selectedChild.name}`}
                                     </Button>
                                     <Menu
@@ -318,7 +318,7 @@ const Courses: React.FC<CoursesProps> = ({ courses ,id,childs }) => {
                                         </svg>
                                         <span className="text-lg">{course.description}</span>
                                     </div>
-                                    <div className="border border-dashed border-gray-300 my-4"/>
+                                    <div className="border border-dashed border-gray-300 my-2"/>
                                     <div className="mt-auto">
                                         <div className="flex flex-col gap-4">
                                             <div className="flex items-center">

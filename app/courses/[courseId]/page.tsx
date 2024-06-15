@@ -6,7 +6,8 @@ import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 
 
 
-// Assuming you have a function to fetch course data
+
+// ng you have a function to fetch course data
 async function getCourseData(courseId: number) {
     return prisma.courses.findUnique({ where: { id: courseId } });
 }
