@@ -1,6 +1,6 @@
 # PFE Project: Teaching Children to Code Using Drag and Drop with Blockly and Ansible
 
-This is a PFE (Professional Final Project) for graduation, aimed at creating a platform for teaching children how to code using a drag-and-drop, puzzle-like interface similar to Scratch. The project utilizes the Blockly module from Google and incorporates automation using Ansible.
+This is a PFE  Projet fin d'étude) for graduation, aimed at creating a platform for teaching children how to code using a drag-and-drop, puzzle-like interface similar to Scratch. The project utilizes the Blockly module from Google and incorporates automation using Ansible.
 
 ## Installation, Running, and Building
 
